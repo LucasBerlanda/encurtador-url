@@ -2,6 +2,7 @@ package com.example.encurtador_url.service;
 
 import com.example.encurtador_url.exception.UrlNotFoundException;
 import com.example.encurtador_url.model.Url;
+import com.example.encurtador_url.record.controller.ListaUrlDTO;
 import com.example.encurtador_url.record.controller.UrlDTO;
 import com.example.encurtador_url.repository.UrlRepository;
 import com.example.encurtador_url.utils.UrlUtils;
@@ -10,7 +11,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EncurtadorService {
@@ -53,5 +56,9 @@ public class EncurtadorService {
         }while (repository.existsById(urlId));
 
         return urlId;
+    }
+
+    public List<ListaUrlDTO> getAllUrls() {
+        return repository.findAll().stream().map(u -> new ListaUrlDTO(u.getUrlID(), u.getUrlCompleta())).collect(Collectors.toList());
     }
 }
